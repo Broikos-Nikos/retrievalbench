@@ -1,0 +1,118 @@
+# Build, gate, and publish the page.
+#
+# Eight gates, and all of them run here.
+#
+# `npm run build` runs six before vite writes anything: the invisible character
+# scan, the licence claim against the LICENSE file and the corpus attribution,
+# every policy held to the chunking it is named for, every chunk and ranking
+# recomputed from the hashed corpus, the headline held to the corpus it is a
+# claim about, and every figure in the README held to the measurement.
+#
+# Two need a served page and a real browser, so they run in their own job
+# against the built output, sharing one server rather than starting one each:
+# every marked and greyed character on the page is held to what the library
+# computes, and the recording at the top of the README is held to a state the
+# live page still reaches.
+#
+# `check:policies` is the one this project exists to have. Every number on the
+# page is a comparison between chunking policies, so a policy that silently
+# degenerates makes all of them meaningless while each one still looks
+# plausible. The paragraph policy did exactly that: 4 chunks per language
+# against 125, and a recall of exactly 1.000.
+#
+# Nothing deploys unless all of them pass, and that promise is enforced twice:
+# by the `needs:` on the deploy job, and by the fact that the two jobs running
+# other people's code cannot deploy even if they wanted to. See the permissions
+# note below.
+name: pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Nothing by default. `pages: write` and `id-token: write` are the pair that
+# creates a Pages deployment, and they are granted on the deploy job alone.
+#
+# `build` and `verify` run `npm ci`, which executes dependency postinstall
+# hooks, and `npx playwright install --with-deps`, which installs system
+# packages as root. Granting deployment credentials to the jobs that run other
+# people's code, and then promising in the header that nothing deploys unless
+# the gates pass, is a guarantee contradicted by the lines above it.
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      # persist-credentials: false, so the job's token is not left in
+      # .git/config where an install hook could read it.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 1
+      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
+        with:
+          path: dist
+
+  verify:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: dist
+          path: dist
+      - run: npx playwright install --with-deps chromium
+      # The gates drive the page the visitor gets, not the dev server. The
+      # server comes from tools/serve.mjs: one preview on a port the operating
+      # system hands out, proved byte for byte against dist/index.html before
+      # anything measures it. Ten gates used to spawn their own on a fixed
+      # number, which leaked ten servers on the development machine and let one
+      # gate report green against a page it had never started.
+      - run: npm run verify
+
+  deploy:
+    # Only after all of them, and the only job holding the permissions that can
+    # publish anything. A page that looks broken on a healthy load must not
+    # reach anyone just because the numbers happened to be right.
+    needs: [build, verify]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

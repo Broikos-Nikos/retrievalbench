@@ -1,0 +1,5 @@
+*.local
+.DS_Store
+.capture
+dist
+node_modules
