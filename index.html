@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>retrievalbench: the chunk boundary is not about finding it</title>
+    <meta
+      name="description"
+      content="Three chunking policies over the same eight articles. Every one finds the right passage every time. A fixed cut hands back a truncated answer for 11.5% of English queries and 5.2% of Greek."
+    />
+    <meta property="og:title" content="retrievalbench: the chunk boundary is not about finding it" />
+    <meta
+      property="og:description"
+      content="Where you cut a document does not decide whether you find the answer. It decides whether you are handed all of it."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230a0c10'/%3E%3Crect x='2' y='3' width='12' height='1.6' fill='%237e8aa0'/%3E%3Crect x='2' y='6.2' width='7' height='1.6' fill='%23e8b04b'/%3E%3Crect x='9.4' y='6.2' width='4.6' height='1.6' fill='%233d4454'/%3E%3Crect x='2' y='9.4' width='12' height='1.6' fill='%237e8aa0'/%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <noscript>
+      <p class="noscript">
+        This page runs a retrieval benchmark in the browser. Without JavaScript the measurement is still in the
+        repository, as <code>src/generated/retrieval.json</code>, and every figure below is in the README.
+      </p>
+    </noscript>
+
+    <header class="masthead">
+      <p class="eyebrow">retrievalbench</p>
+      <h1>
+        Where you cut a document does not decide whether you <em>find</em> the answer.
+        <span class="h1-second">It decides whether you are handed all of it.</span>
+      </h1>
+      <p class="standfirst">
+        Three chunking policies over the same eight Wikipedia articles, English and Greek, same target size, same BM25.
+        All three return a passage holding most of the query for at least 99% of them. What changes is whether the
+        passage arrives whole.
+      </p>
+      <dl class="headline">
+        <div class="hot">
+          <dt>a fixed cut truncates</dt>
+          <dd id="kpi-fixed">&mdash;</dd>
+          <dd class="unit" id="kpi-fixed-unit">of queries</dd>
+        </div>
+        <div><dt>sentence aligned</dt><dd id="kpi-sentence">&mdash;</dd><dd class="unit">of queries return the whole answer, at the same index size</dd></div>
+        <div><dt>the overlap trick costs</dt><dd id="kpi-overlap">&mdash;</dd><dd class="unit" id="kpi-overlap-unit">more index, for the same answers</dd></div>
+      </dl>
+    </header>
+
+    <main>
+      <section class="lab" aria-labelledby="lab-h">
+        <div class="lab-head">
+          <h2 id="lab-h">The cut, on the text</h2>
+          <div class="controls">
+            <fieldset class="seg">
+              <legend>Policy</legend>
+              <div id="policy" class="seg-row" role="radiogroup" aria-label="Chunking policy"></div>
+            </fieldset>
+            <fieldset class="seg">
+              <legend>Corpus</legend>
+              <div id="lang" class="seg-row" role="radiogroup" aria-label="Language"></div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="query">
+          <label class="query-label" for="q">Ask it something. These are the queries the measurement used.</label>
+          <div class="query-row">
+            <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="loading the corpus" disabled />
+            <select id="preset" disabled aria-label="A query from the measurement"></select>
+          </div>
+          <p class="verdict" id="verdict" role="status">&nbsp;</p>
+        </div>
+
+        <div class="paper" id="paper" aria-describedby="paper-alt"></div>
+        <p class="alt" id="paper-alt"></p>
+
+        <table class="ranked">
+          <caption>What came back, and how much of the query each result contains</caption>
+          <thead>
+            <tr><th scope="col">rank</th><th scope="col">chunk</th><th scope="col">score</th><th scope="col">holds</th></tr>
+          </thead>
+          <tbody id="ranked"></tbody>
+        </table>
+      </section>
+
+      <section class="board" aria-labelledby="board-h">
+        <h2 id="board-h">The leaderboard</h2>
+        <p class="lede">
+          Every policy, both query families, over <span id="board-queries">&mdash;</span> queries. The
+          <strong>whole</strong> column is the share of queries whose top result contains the entire query. The
+          <strong>majority</strong> column is the share containing more than half of it, and it is 1.000 everywhere but
+          one cell, which is the point: the boundary is barely deciding what you find. The exception is named under the
+          table, because a table of 1.000s with one 0.990 in it is the kind of thing prose quietly rounds away.
+        </p>
+        <table class="scores">
+          <thead>
+            <tr>
+              <th scope="col">policy</th><th scope="col">chunks</th><th scope="col">indexed</th>
+              <th scope="col">whole, sentence</th><th scope="col">whole, keywords</th><th scope="col">majority</th>
+              <th scope="col">characters lost, median / worst</th>
+            </tr>
+          </thead>
+          <tbody id="scores"></tbody>
+        </table>
+        <p class="note" id="board-note"></p>
+      </section>
+
+      <section class="method" aria-labelledby="method-h">
+        <h2 id="method-h">Method</h2>
+        <p id="method-provenance"></p>
+        <p>
+          The task is self retrieval: a sentence is taken out of an article and used as the query, so the passage that
+          contains it is the right answer by construction and nothing had to be labelled. It is a weak task on purpose,
+          because it flatters every method, so a difference that survives it is real. Every query is asked twice, once
+          as the sentence and once as its longest words in the order they appear, which is closer to what a person
+          types. The two families give the same answer.
+        </p>
+        <p>
+          A result is <strong>right</strong> when it holds the text somebody asked for, measured as the fraction of the
+          query's characters inside the returned chunk. Scoring by "the chunk the sentence started in" was the first
+          rule written, and it is unfair to any policy whose chunks overlap: it put the overlap policy at 0.823 against
+          0.938 for fixed, a difference that was entirely an artefact of the rule.
+        </p>
+        <p class="repo"><a href="https://github.com/broikos-nikos/retrievalbench">Source, measurement and gates on GitHub</a></p>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

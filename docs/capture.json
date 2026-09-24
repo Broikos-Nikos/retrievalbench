@@ -1,0 +1,15 @@
+{
+  "recorded": "2026-09-24",
+  "fps": 8,
+  "width": 880,
+  "crop": "crop=1280:450:0:83",
+  "seconds": 7.6,
+  "bytes": 567323,
+  "looked": {
+    "policy": "fixed",
+    "lang": "en",
+    "marked": 135,
+    "greyed": 43,
+    "verdict": "Truncated. The top result holds 75.8% of the query. 43 characters are on the other side of the cut."
+  }
+}
