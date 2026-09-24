@@ -1,0 +1,35 @@
+{
+  "name": "retrievalbench",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && npm run check && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run check:source && npm run check:licence && npm run check:index && npm run check:policies && npm run check:boundary && npm run check:claims",
+    "check:source": "node tools/check-source.mjs",
+    "check:licence": "node tools/check-licence.mjs",
+    "check:index": "node tools/check-index.mjs",
+    "check:policies": "node tools/check-policies.mjs",
+    "check:boundary": "node tools/check-boundary.mjs",
+    "check:claims": "node tools/check-claims.mjs",
+    "check:page": "node tools/check-page.mjs",
+    "check:capture": "node tools/check-capture.mjs",
+    "build:index": "node tools/build-index.mjs",
+    "capture": "node tools/capture.mjs",
+    "verify": "node tools/verify.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.6",
+    "playwright": "1.61.1",
+    "typescript": "5.9.3",
+    "vite": "8.3.0"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true,
+    "fsevents": true
+  }
+}
