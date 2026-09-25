@@ -16,6 +16,7 @@
  */
 
 import { spawn } from 'node:child_process'
+import { browserReady } from './preflight.mjs'
 import { serve } from './serve.mjs'
 
 /*
@@ -26,6 +27,9 @@ import { serve } from './serve.mjs'
  * that failure was committed once before anybody read the line under the build.
  */
 const GATES = ['check:page', 'check:capture']
+
+/* Before the server, because a server nobody can drive is not worth starting. */
+await browserReady()
 
 const server = await serve()
 let failed = 0
