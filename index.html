@@ -65,13 +65,19 @@
         <div class="query">
           <label class="query-label" for="q">Ask it something. These are the queries the measurement used.</label>
           <div class="query-row">
-            <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="loading the corpus" disabled />
+            <!--
+              dir="auto" because this box takes whatever a visitor types and the
+              page declared no direction. tokenlab and watch-it-think both had
+              the same hole: Arabic and Hebrew were laid out left to right, and
+              a trailing full stop landed at the wrong end of the line.
+            -->
+            <input id="q" type="search" dir="auto" autocomplete="off" spellcheck="false" placeholder="loading the corpus" disabled />
             <select id="preset" disabled aria-label="A query from the measurement"></select>
           </div>
           <p class="verdict" id="verdict" role="status">&nbsp;</p>
         </div>
 
-        <div class="paper" id="paper" aria-describedby="paper-alt"></div>
+        <div class="paper" id="paper" dir="auto" aria-describedby="paper-alt"></div>
         <p class="alt" id="paper-alt"></p>
 
         <table class="ranked">
