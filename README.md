@@ -86,6 +86,14 @@ combinations: one English keyword query under the fixed policy returns a chunk
 holding 14.1% of it, so that cell reads **0.99** and not 1.000. The page names it
 under the table rather than rounding it away.
 
+**Not that normalisation is free.** Greek with combining accents is the same
+text on screen and a different string to a word splitter, so a query pasted in
+NFD used to share no term with this NFC corpus: the same Greek query scored
+27.25 as typed and 0.67 in NFD, and the top result changed to the wrong article,
+silently. `words()` normalises to NFC now, so the two forms are one query.
+`tokenlab` answers the same hazard the opposite way, by saying so rather than
+normalising, because it measures what you pasted and this retrieves it.
+
 **Not that sentence alignment always wins.** It wins on prose with sentence
 punctuation. A table, a code listing or a transcript has no sentence ends to cut
 at, and the policy degenerates to the fixed one.

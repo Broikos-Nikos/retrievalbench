@@ -26,8 +26,22 @@
  * between them is exactly the queries a boundary split.
  */
 
-/** Words, for Greek as well as English, without a tokenizer. */
-export const words = (s) => s.toLowerCase().match(/\p{Letter}[\p{Letter}\p{Mark}'’-]*|\p{Number}+/gu) ?? []
+/**
+ * Words, for Greek as well as English, without a tokenizer.
+ *
+ * NFC first, and that is not cosmetic. Greek with combining accents is the same
+ * text on screen and a different string to `match`, so a query pasted in NFD,
+ * which is what comes off some macOS pipelines, shares no term with an NFC
+ * corpus. Measured before this: the same Greek query scored **27.25 as typed
+ * and 0.67 in NFD**, and the top result changed from the right article to the
+ * wrong one. Silently, with a confident ranking over it.
+ *
+ * `tokenlab` answers the same hazard the other way round, by saying so rather
+ * than normalising, and the difference is what each page is for: that one
+ * measures what you pasted, so changing it would be lying about the
+ * measurement. This one retrieves, so the two forms have to be one query.
+ */
+export const words = (s) => s.normalize('NFC').toLowerCase().match(/\p{Letter}[\p{Letter}\p{Mark}'’-]*|\p{Number}+/gu) ?? []
 
 /**
  * The three policies, at one target size so the comparison is about where the
