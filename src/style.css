@@ -12,6 +12,15 @@
   --ink-2: #10131b;
   --ink-3: #171b25;
   --line: #232835;
+  /*
+   * The line around anything you can use, as against the lines that separate
+   * prose. Swept out of watch-it-think's WP-F10 at tick 176: every interactive
+   * boundary in this workspace measured between 1.07:1 and 1.48:1 and WCAG
+   * 1.4.11 asks 3:1, so one token cannot be both. tokenlab named this
+   * --edge-control when it fixed its own at tick 136, so the others use that
+   * name too.
+   */
+  --edge-control: #626b7c;
 
   --paper: #eef1f7;
   --dim: #a2aaba;
@@ -194,7 +203,7 @@ h2 {
   display: flex;
   gap: 2px;
   padding: 2px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--edge-control);
   border-radius: 8px;
   background: var(--ink-2);
 }
@@ -245,7 +254,7 @@ select {
   width: 100%;
   min-width: 0;
   padding: 0.6rem 0.75rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--edge-control);
   border-radius: 8px;
   background: var(--ink-2);
   color: var(--paper);
