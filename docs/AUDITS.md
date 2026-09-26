@@ -6,7 +6,7 @@ No audit pass has been run against this project yet. Every finding here was
 raised by a sweep of a class found in another project in the same workspace,
 which is why the identifiers read `RCON` and `RGIF` rather than a perspective.
 
-**7 findings, 2 closed, 5 open**, across the 0 perspectives that produced them.
+**8 findings, 3 closed, 5 open**, across the 0 perspectives that produced them.
 
 Held to the workspace queue this project is built from by
 `tools/check-audit-status.mjs`, which fails if a row here says anything the
@@ -19,12 +19,13 @@ Not a perspective and not an agent. Findings raised against this project while
 a class found somewhere else in the workspace was being swept across all eight,
 kept here because commit messages cite them like any other.
 
-7 findings, 2 closed.
+8 findings, 3 closed.
 
 | id | severity | status | finding |
 |---|---|---|---|
 | `RCAP-F1` | medium | open | capture.mjs hands the committed GIF to ffmpeg, and never asks whether ffmpeg is installed |
 | `RCON-F1` | medium | fixed, tick 176 | The query box and the model select are bounded at 1.35:1 |
+| `RPRO-F1` | medium | fixed, tick 181 | The claims header says a figure is counted and the first half compares the count to zero |
 | `RCUT-F1` | low | open | A preset query is cut at seventy characters with nothing saying it was cut |
 | `RGIF-F1` | low | open | The loop runs 7.63 seconds, above the five and a half tokenlab settled on |
 | `RNET-F1` | low | open | The README promises the corpus and the search stay in your browser and nothing holds it: no gate watches the wire |

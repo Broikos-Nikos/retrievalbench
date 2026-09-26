@@ -3,12 +3,19 @@
  *
  *   npm run check:claims
  *
- * **Every claim is a phrase with its surrounding words, counted rather than
- * merely found.** A spec gate in this workspace held a claim as the bare string
- * "107" and its control passed against a document edited to say 108, because
- * the file said 107 three more times in other sentences.
+ * **Every claim is a phrase with its surrounding words, not a bare number.** A
+ * spec gate in this workspace held a claim as the bare string "107" and its
+ * control passed against a document edited to say 108, because the file said
+ * 107 three more times in other sentences.
  *
- * The second half is the one that catches numbers nobody thought to assert:
+ * That half asks only whether the phrase is present: the count below is
+ * compared to zero and to nothing else. This sentence used to say "counted
+ * rather than merely found", which it does not do, and `watch-it-think`
+ * carried the same words over the same shape with no second half to redeem
+ * them, which is `WD2-F8`.
+ *
+ * The second half is where a figure is **counted rather than merely found**,
+ * and it is the one that catches numbers nobody thought to assert:
  * after checking that everything claimed is present, this sweeps the README for
  * figures of the shapes this project deals in, a percentage, a share at three
  * decimals, a character count, and fails on any the measurement does not
