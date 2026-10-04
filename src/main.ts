@@ -258,14 +258,36 @@ function render() {
   paper.appendChild(frag)
 
   const verdict = el('verdict')
+  /*
+   * Built out of nodes, like the divider above and for the same reason. These
+   * two interpolate only numbers, so they were never the defect; they are the
+   * habit that produced it, and a file with none of that method left in it is
+   * a thing a gate can state in one line.
+   */
+  const verdictParts = (strong: string, strongClass: string, rest: string, tail?: [string, string]) => {
+    verdict.textContent = ''
+    const lead = document.createElement('strong')
+    if (strongClass) lead.className = strongClass
+    lead.textContent = strong
+    verdict.append(lead, document.createTextNode(rest))
+    if (tail) {
+      const em = document.createElement('strong')
+      em.textContent = tail[0]
+      verdict.append(em, document.createTextNode(tail[1]))
+    }
+  }
+
   if (!cov) {
     verdict.textContent = `Top result: ${top.article}, characters ${fmt(top.start)} to ${fmt(top.end)}. Typed queries have no known span, so nothing is marked.`
   } else if (cov.fraction >= 0.999) {
-    verdict.innerHTML = `<strong class="good">Whole.</strong> The top result contains all ${fmt(span!.length)} characters of the query.`
+    verdictParts('Whole.', 'good', ` The top result contains all ${fmt(span!.length)} characters of the query.`)
   } else {
-    verdict.innerHTML =
-      `<strong class="bad">Truncated.</strong> The top result holds ${pct(cov.fraction)} of the query. ` +
-      `<strong>${cov.lostChars} characters</strong> are on the other side of the cut.`
+    verdictParts(
+      'Truncated.',
+      'bad',
+      ` The top result holds ${pct(cov.fraction)} of the query. `,
+      [`${cov.lostChars} characters`, ' are on the other side of the cut.'],
+    )
   }
 
   el('paper-alt').textContent =
@@ -304,10 +326,24 @@ function clip(s: string, side: 'head' | 'tail' | 'both') {
   return `${s.slice(0, LIMIT)} … ${s.slice(-LIMIT)}`
 }
 
+/*
+ * The divider over a chunk, with the article's own title in it.
+ *
+ * Swept here from watch-it-think WS-F7, which is the same shape: a string out
+ * of a document the page downloads, printed as the page's own text. This one
+ * went through innerHTML. Measured at tick 202 by serving this bundle a
+ * corpus.json whose first title is `<img src=x onerror=window.__pwned=1>`,
+ * which is what a fork pointing at its own corpus does: the element was
+ * created, `<span><img src="x" onerror="window.__pwned=1">, characters 62,520
+ * to`, and only the page's `script-src 'self'` stopped the handler running. A
+ * span and textContent make it a question nobody has to ask again.
+ */
 function rule(label: string) {
   const d = document.createElement('div')
   d.className = 'rule'
-  d.innerHTML = `<span>${label}</span>`
+  const span = document.createElement('span')
+  span.textContent = label
+  d.appendChild(span)
   return d
 }
 
