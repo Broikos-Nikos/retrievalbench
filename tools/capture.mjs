@@ -140,6 +140,29 @@ try {
   const filters = `${crop},fps=${FPS},scale=${WIDTH}:-1:flags=lanczos`
   const offset = Math.max(0, (startedAt - videoStart) / 1000 - 0.3)
   const trim = ['-ss', String(offset)]
+  /*
+   * The second seam, at the encoder.
+   *
+   * `start` proves what a dying run leaves behind. It proves nothing about the
+   * run that works, and tick 199 wrapped this recorder in a try that scoped a
+   * `const` the trim arithmetic below reads, so `npm run capture` died on a
+   * ReferenceError every time it got this far, with the gate written in the same
+   * tick green. This one throws after everything the recorder and the arithmetic
+   * do and before the first frame is encoded, so the whole success path runs and
+   * nothing in docs/ is rewritten.
+   */
+  if (FAIL_AT === 'encode') {
+  /* Reported here rather than thrown: by this line the recorder's try is
+     closed, in two of these seven, and an uncaught throw would print a node
+     stack instead of saying where the recording is. */
+  const kept = existsSync(WORK) ? readdirSync(WORK).filter((f) => f.endsWith('.webm')) : []
+  const bytes = kept.reduce((n, f) => n + statSync(resolve(WORK, f)).size, 0)
+  console.error('FAIL  CAPTURE_FAIL_AT=encode, the seam that proves the success path runs')
+  console.error(`      the recording is in ${WORK}, ${bytes} bytes, finished and kept, for looking at`)
+  console.error('      .capture is in .gitignore, so it cannot reach a commit. Delete it when you are done.')
+  process.exit(1)
+}
+
 
   /*
    * Sixteen colours, undithered, eight frames a second, which `chunkline`
