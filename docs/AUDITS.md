@@ -5,7 +5,7 @@ Commit messages cite identifiers like `RCON-F1`. This is what they refer to.
 No audit pass has been run against this project yet. Every finding here was
 raised by a sweep of a class found in another project in the same workspace.
 
-**11 findings, 7 closed, 4 open**.
+**12 findings, 7 closed, 5 open**.
 
 Held to the workspace queue this project is built from by
 `tools/check-audit-status.mjs`, which fails if a row here says anything the
@@ -17,7 +17,7 @@ Not a perspective and not an agent. Findings raised against this project while
 a class found somewhere else in the workspace was being swept across all eight,
 kept here because commit messages cite them like any other.
 
-11 findings, 7 closed.
+12 findings, 7 closed.
 
 | id | severity | status | finding |
 |---|---|---|---|
@@ -32,3 +32,4 @@ kept here because commit messages cite them like any other.
 | `RNET-F1` | low | fixed, tick 192 | The README promises the corpus and the search stay in your browser and nothing holds it: no gate watches the wire |
 | `RPRE-F1` | low | fixed, tick 165 | npm run verify started a server and handed the same missing browser to every gate in turn |
 | `RSEAL-F1` | low | fixed, tick 192 | The page says the work happens in your browser and nothing enforces it |
+| `RTAP-F1` | low | open | Controls shorter than 24 pixels at a phone width |
