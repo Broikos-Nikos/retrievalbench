@@ -465,6 +465,26 @@ a {
   color: var(--mark);
 }
 
+/*
+ * A table that does not fit its column, reachable rather than cut.
+ *
+ * Found at tick 198 by the sweep behind watch-it-think WD-F6, which measures
+ * every drawn block against the line it is given at 61 widths from 320 to
+ * 1280. This table was 77 pixels wider than its column at 320, and no gate in this project
+ * looked below 390. Copied from tokenlab, which solved it first and whose
+ * comment is the reason the region is focusable: a keyboard visitor cannot
+ * reach the half of a table that is off screen.
+ */
+.table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius);
+}
+
+.table-wrap:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 :where(a, button, select, input):focus-visible {
   outline: 2px solid var(--mark);
   outline-offset: 2px;

@@ -114,16 +114,27 @@
           one cell, which is the point: the boundary is barely deciding what you find. The exception is named under the
           table, because a table of 1.000s with one 0.990 in it is the kind of thing prose quietly rounds away.
         </p>
-        <table class="scores">
-          <thead>
-            <tr>
-              <th scope="col">policy</th><th scope="col">chunks</th><th scope="col">indexed</th>
-              <th scope="col">whole, sentence</th><th scope="col">whole, keywords</th><th scope="col">majority</th>
-              <th scope="col">characters lost, median / worst</th>
-            </tr>
-          </thead>
-          <tbody id="scores"></tbody>
-        </table>
+        <!--
+          A table wider than its column has to be reachable, and a scrollable
+          region has to be focusable or a keyboard visitor cannot get to the
+          half that is off screen. tabindex and an accessible name are what
+          make it a region rather than a trap. Measured at tick 198 by
+          tools/check-fills.mjs: 77 pixels wider than its column at 320.
+          The pattern is tokenlab's div.table-wrap, found by the sweep rather
+          than invented here.
+        -->
+        <div class="table-wrap" tabindex="0" role="region" aria-label="The leaderboard, scrollable">
+          <table class="scores">
+            <thead>
+              <tr>
+                <th scope="col">policy</th><th scope="col">chunks</th><th scope="col">indexed</th>
+                <th scope="col">whole, sentence</th><th scope="col">whole, keywords</th><th scope="col">majority</th>
+                <th scope="col">characters lost, median / worst</th>
+              </tr>
+            </thead>
+            <tbody id="scores"></tbody>
+          </table>
+        </div>
         <p class="note" id="board-note"></p>
       </section>
 

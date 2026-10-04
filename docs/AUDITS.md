@@ -5,7 +5,7 @@ Commit messages cite identifiers like `RCON-F1`. This is what they refer to.
 No audit pass has been run against this project yet. Every finding here was
 raised by a sweep of a class found in another project in the same workspace.
 
-**12 findings, 7 closed, 5 open**.
+**13 findings, 8 closed, 5 open**.
 
 Held to the workspace queue this project is built from by
 `tools/check-audit-status.mjs`, which fails if a row here says anything the
@@ -17,11 +17,12 @@ Not a perspective and not an agent. Findings raised against this project while
 a class found somewhere else in the workspace was being swept across all eight,
 kept here because commit messages cite them like any other.
 
-12 findings, 7 closed.
+13 findings, 8 closed.
 
 | id | severity | status | finding |
 |---|---|---|---|
 | `RCAP-F1` | medium | open | capture.mjs hands the committed GIF to ffmpeg, and never asks whether ffmpeg is installed |
+| `RTBL-F1` | medium | fixed, tick 198 | The leaderboard is 77 pixels wider than its column at 320 and nothing in this project looks below 390 |
 | `RCON-F1` | medium | fixed, tick 176 | The query box and the model select are bounded at 1.35:1 |
 | `RFOLD-F1` | medium | open | The picture the page is built on is below the fold at both widths |
 | `RGRP-F1` | medium | fixed, tick 182 | serve.mjs kills a process group the spawn never creates, so cleanup off Windows leaves the server running |
