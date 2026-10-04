@@ -26,7 +26,7 @@ import { serve } from './serve.mjs'
  * browser gates failed" against a project that simply had no capture yet, and
  * that failure was committed once before anybody read the line under the build.
  */
-const GATES = ['check:page', 'check:capture']
+const GATES = ['check:page', 'check:network', 'check:capture']
 
 /* Before the server, because a server nobody can drive is not worth starting. */
 await browserReady()

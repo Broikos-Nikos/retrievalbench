@@ -17,6 +17,7 @@
     "check:boundary": "node tools/check-boundary.mjs",
     "check:claims": "node tools/check-claims.mjs",
     "check:page": "node tools/check-page.mjs",
+    "check:network": "node tools/check-network.mjs",
     "check:capture": "node tools/check-capture.mjs",
     "build:index": "node tools/build-index.mjs",
     "capture": "node tools/capture.mjs",

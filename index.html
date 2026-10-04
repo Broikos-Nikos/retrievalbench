@@ -3,6 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      RNET-F2, swept out of `watch-it-think`'s WS-F2. The README says this page
+      "builds all six indexes in your browser, and answers whatever you type",
+      and until tick 192 nothing enforced it. Measured then on the built page: 4
+      requests, all on load, all to this origin, the last of them the frozen
+      corpus; 0 after a query was typed and submitted; 0 carrying that query;
+      nothing in localStorage, sessionStorage, cookies or a service worker.
+
+      Stricter than `watch-it-think`'s policy and the same as `chunkline`'s: no
+      `'wasm-unsafe-eval'` and no `blob:`, because the indexes are built in
+      javascript, with no model to compile and no worker to start.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'"
+    />
     <title>retrievalbench: the chunk boundary is not about finding it</title>
     <meta
       name="description"
