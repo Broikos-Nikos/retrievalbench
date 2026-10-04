@@ -15,7 +15,7 @@
  */
 
 import { execFileSync } from 'node:child_process'
-import { mkdirSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
@@ -33,16 +33,36 @@ rmSync(WORK, { recursive: true, force: true })
 mkdirSync(WORK, { recursive: true })
 
 const server = await serve()
+/*
+ * A seam for the failure path, because the failure path is the half nothing
+ * ran. `CAPTURE_FAIL_AT=start` throws just after the page loads, which is what
+ * a slow asset or a machine that prefers reduced motion produce on their own,
+ * and `check-capture-exit.mjs` at the workspace uses it on every project that
+ * films itself. Swept here from watch-it-think WS-F5.
+ */
+const FAIL_AT = process.env.CAPTURE_FAIL_AT ?? ''
+
 let looked
 let seconds
 let crop
 
+let browser = null
+let context = null
+let failure = null
+
 try {
-  const browser = await chromium.launch()
-  const context = await browser.newContext({ viewport: SIZE, deviceScaleFactor: 1, recordVideo: { dir: WORK, size: SIZE } })
+  browser = await chromium.launch()
+  context = await browser.newContext({ viewport: SIZE, deviceScaleFactor: 1, recordVideo: { dir: WORK, size: SIZE } })
   const videoStart = Date.now()
   const page = await context.newPage()
   await page.goto(server.url, { waitUntil: 'networkidle' })
+  /* The seam fires here and not earlier: a context with no page in it has no
+     video to finalise, so throwing sooner tests the message and not the thing
+     the message is about. */
+  if (FAIL_AT === 'start') {
+    await page.waitForTimeout(500)
+    throw new Error('CAPTURE_FAIL_AT=start, the seam the failure path is tested through')
+  }
 
   // Wait for the corpus, not for a timeout. The recording should not open on
   // the word "loading".
@@ -150,9 +170,33 @@ try {
       2,
     ) + '\n',
   )
+} catch (err) {
+  failure = err
 } finally {
+  /*
+   * Closed even when something above threw, because this is what writes the
+   * video file. Playwright only finalises a video when its context closes, so
+   * without this a failed run left a zero byte webm behind and the recording
+   * was gone. WS-F5, measured in watch-it-think at 0 bytes before the recorder
+   * and 971,857 after it.
+   */
+  await context?.close().catch(() => {})
+  await browser?.close().catch(() => {})
   server.stop()
 }
+if (failure) {
+  console.error(`FAIL  ${failure.message}`)
+  const kept = existsSync(WORK) ? readdirSync(WORK).filter((f) => f.endsWith('.webm')) : []
+  if (kept.length > 0) {
+    const bytes = kept.reduce((n, f) => n + statSync(resolve(WORK, f)).size, 0)
+    console.error(`      the recording is in ${WORK}, ${bytes} bytes, finished and kept, for looking at`)
+    console.error('      .capture is in .gitignore, so it cannot reach a commit. Delete it when you are done.')
+  } else {
+    console.error(`      nothing was recorded, and ${WORK} is empty`)
+  }
+  process.exit(1)
+}
+
 
 const { size } = statSync(OUT)
 console.log(`docs/cut.gif   ${(size / 1e6).toFixed(2)} MB at ${FPS} fps, ${WIDTH}px wide, ${crop}`)
