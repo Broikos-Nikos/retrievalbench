@@ -110,12 +110,12 @@ const browser = await chromium.launch()
 try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 1100 } })
   await page.goto(server.url, { waitUntil: 'networkidle' })
-  await page.waitForFunction(() => document.querySelectorAll('#paper .chunk').length > 0, null, { timeout: 60_000 })
+  await page.waitForFunction(() => document.querySelectorAll('#paper [data-chunk]').length > 0, null, { timeout: 60_000 })
   await page.click(`#lang .seg-btn[data-value="${recorded.looked.lang}"]`)
   await page.click(`#policy .seg-btn[data-value="${recorded.looked.policy}"]`)
   const now = await page.evaluate(() => ({
     marked: document.querySelector('#paper mark')?.textContent?.length ?? 0,
-    greyed: [...document.querySelectorAll('#paper .chunk--lost')].reduce((a, n) => a + (n.textContent?.length ?? 0), 0),
+    greyed: [...document.querySelectorAll('#paper [data-chunk][data-lost]')].reduce((a, n) => a + (n.textContent?.length ?? 0), 0),
     verdict: document.getElementById('verdict')?.textContent?.trim() ?? '',
   }))
   for (const k of ['marked', 'greyed', 'verdict']) {

@@ -46,7 +46,7 @@ const browser = await chromium.launch()
 try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } })
   await page.goto(server.url, { waitUntil: 'networkidle' })
-  await page.waitForFunction(() => document.querySelectorAll('#paper .chunk').length > 0, null, { timeout: 60_000 })
+  await page.waitForFunction(() => document.querySelectorAll('#paper [data-chunk]').length > 0, null, { timeout: 60_000 })
 
   /* 1. The three figures a ten second reader takes away. */
   const v = d.verdict
@@ -90,9 +90,9 @@ try {
 
       const shown = await page.evaluate(() => ({
         mark: document.querySelector('#paper mark')?.textContent ?? '',
-        before: document.querySelector('#paper .chunk--before')?.textContent ?? '',
-        after: document.querySelector('#paper .chunk--after')?.textContent ?? '',
-        rules: document.querySelectorAll('#paper .rule').length,
+        before: document.querySelector('#paper [data-chunk][data-before]')?.textContent ?? '',
+        after: document.querySelector('#paper [data-chunk][data-after]')?.textContent ?? '',
+        rules: document.querySelectorAll('#paper [data-rule]').length,
       }))
 
       const wantMark = article.text.slice(Math.max(top.start, span.at), Math.min(top.end, span.at + span.length))
@@ -147,7 +147,7 @@ try {
   /* 4. The phone. */
   const phone = await browser.newPage({ viewport: { width: 390, height: 844 } })
   await phone.goto(server.url, { waitUntil: 'networkidle' })
-  await phone.waitForFunction(() => document.querySelectorAll('#paper .chunk').length > 0, null, { timeout: 60_000 })
+  await phone.waitForFunction(() => document.querySelectorAll('#paper [data-chunk]').length > 0, null, { timeout: 60_000 })
   const overflow = await phone.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)
   if (overflow > 0) fail(`the page scrolls sideways by ${overflow}px at 390`)
   else ok('no horizontal overflow at 390')

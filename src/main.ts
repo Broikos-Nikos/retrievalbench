@@ -236,6 +236,7 @@ function render() {
 
   const body = document.createElement('div')
   body.className = 'chunk'
+  body.dataset.chunk = ''
   const inside = article.text.slice(top.start, top.end)
   if (span && cov && cov.insideChars > 0) {
     const from = Math.max(top.start, span.at) - top.start
@@ -341,6 +342,7 @@ function clip(s: string, side: 'head' | 'tail' | 'both') {
 function rule(label: string) {
   const d = document.createElement('div')
   d.className = 'rule'
+  d.dataset.rule = ''
   const span = document.createElement('span')
   span.textContent = label
   d.appendChild(span)
@@ -350,6 +352,9 @@ function rule(label: string) {
 function lost(text: string, where: 'before' | 'after') {
   const d = document.createElement('div')
   d.className = `chunk chunk--lost chunk--${where}`
+  d.dataset.chunk = ''
+  d.dataset.lost = ''
+  d.setAttribute(`data-${where}`, '')
   d.textContent = text
   return d
 }
