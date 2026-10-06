@@ -2,6 +2,8 @@
 
 ### Where you cut a document does not decide whether you find the answer. It decides whether you are handed all of it.
 
+**[The page is live.](https://broikos-nikos.github.io/retrievalbench/)** Cycle the three policies and watch the cut move.
+
 Three chunking policies over the same eight Wikipedia articles, English and
 Greek, same target size, same BM25, 192 queries. All three return a passage
 holding most of the query for at least 99% of them. What changes is whether the
