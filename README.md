@@ -112,6 +112,8 @@ npm run build           # typecheck, six gates, then vite
 npm run verify          # the two gates that need a real browser
 ```
 
+`npm run capture`, which makes the recording at the top of this file, needs one program npm does not install: **ffmpeg**. Install it (`winget install Gyan.FFmpeg`, `brew install ffmpeg`, `apt install ffmpeg`). Nothing else here needs it and the page does not.
+
 The corpus is committed at `data/corpus.json`, sha256 `2dcd7ce3c51955d2`, CC
 BY-SA 4.0, with each article's Wikipedia revision id. It is frozen because
 `chunkline` measured two articles that were edited within a day and re-running
