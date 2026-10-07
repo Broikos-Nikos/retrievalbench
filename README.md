@@ -2,7 +2,13 @@
 
 ### Where you cut a document does not decide whether you find the answer. It decides whether you are handed all of it.
 
-**[The page is live.](https://broikos-nikos.github.io/retrievalbench/)** Cycle the three policies and watch the cut move.
+<!-- No live link yet. This repository was deleted from GitHub on 7 October
+     under D27 and is scheduled to be uploaded again on 14 October, D28. The link
+     and the sentence below go back in on that day, which is step 5 of the
+     upload sequence in state/schedule.json. Until then a claim that the page
+     is live would be a claim nothing supports: the URL returned 404 when this
+     was written, measured. -->
+Cycle the three policies and watch the cut move.
 
 Three chunking policies over the same eight Wikipedia articles, English and
 Greek, same target size, same BM25, 192 queries. All three return a passage
