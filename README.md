@@ -154,3 +154,8 @@ shape of the chunking could.
 
 MIT for the code. The corpus is Wikipedia text under CC BY-SA 4.0, with each
 article's title, revision id and url carried in `data/corpus.json`.
+
+`npm run capture` also reads one environment variable: **`FFMPEG`**, the path
+to the ffmpeg it should use. Without it the bare name is resolved through PATH,
+and either way the program is checked before the browser starts rather than
+after the whole recording, which is `watch-it-think`'s WS-F6.
