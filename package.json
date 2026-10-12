@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && npm run check && vite build",
     "preview": "vite preview",
+    "card": "node tools/card.mjs",
     "typecheck": "tsc --noEmit",
     "check": "npm run check:source && npm run check:licence && npm run check:index && npm run check:policies && npm run check:boundary && npm run check:claims",
     "check:source": "node tools/check-source.mjs",
