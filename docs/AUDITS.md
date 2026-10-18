@@ -25,7 +25,7 @@ kept here because commit messages cite them like any other.
 | `RTBL-F1` | medium | fixed, tick 198 | The leaderboard is 77 pixels wider than its column at 320 and nothing in this project looks below 390 |
 | `RMKP-F1` | medium | fixed, tick 202 | A title out of the fetched corpus is handed to innerHTML, and creates the element it describes |
 | `RCON-F1` | medium | fixed, tick 176 | The query box and the model select are bounded at 1.35:1 |
-| `RFOLD-F1` | medium | open | The picture the page is built on is below the fold at both widths |
+| `RFOLD-F1` | medium | fixed, tick 233 | The picture the page is built on is below the fold at both widths |
 | `RGRP-F1` | medium | fixed, tick 182 | serve.mjs kills a process group the spawn never creates, so cleanup off Windows leaves the server running |
 | `RPRO-F1` | medium | fixed, tick 181 | The claims header says a figure is counted and the first half compares the count to zero |
 | `RNET-F2` | medium | fixed, tick 192 | The README says it builds all six indexes in your browser, and nothing holds it |

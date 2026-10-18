@@ -67,20 +67,6 @@
         Where you cut a document does not decide whether you <em>find</em> the answer.
         <span class="h1-second">It decides whether you are handed all of it.</span>
       </h1>
-      <p class="standfirst">
-        Three chunking policies over the same eight Wikipedia articles, English and Greek, same target size, same BM25.
-        All three return a passage holding most of the query for at least 99% of them. What changes is whether the
-        passage arrives whole.
-      </p>
-      <dl class="headline">
-        <div class="hot">
-          <dt>a fixed cut truncates</dt>
-          <dd id="kpi-fixed">&mdash;</dd>
-          <dd class="unit" id="kpi-fixed-unit">of queries</dd>
-        </div>
-        <div><dt>sentence aligned</dt><dd id="kpi-sentence">&mdash;</dd><dd class="unit">of queries return the whole answer, at the same index size</dd></div>
-        <div><dt>the overlap trick costs</dt><dd id="kpi-overlap">&mdash;</dd><dd class="unit" id="kpi-overlap-unit">more index, for the same answers</dd></div>
-      </dl>
     </header>
 
     <main>
@@ -125,6 +111,29 @@
           <tbody id="ranked"></tbody>
         </table>
       </section>
+
+      <!--
+        The standfirst and the three figures were in the masthead until tick 233,
+        and with them there the paper started at 1108 against a fold of 800. They
+        are a summary, and a summary is worth more once the thing it summarises
+        has been seen: the reader has now cut a real document three ways before
+        being told what the three ways cost. RFOLD-F1, and promptcost answered
+        the same finding the same way at tick 230.
+      -->
+      <p class="standfirst">
+        Three chunking policies over the same eight Wikipedia articles, English and Greek, same target size, same BM25.
+        All three return a passage holding most of the query for at least 99% of them. What changes is whether the
+        passage arrives whole.
+      </p>
+      <dl class="headline">
+        <div class="hot">
+          <dt>a fixed cut truncates</dt>
+          <dd id="kpi-fixed">&mdash;</dd>
+          <dd class="unit" id="kpi-fixed-unit">of queries</dd>
+        </div>
+        <div><dt>sentence aligned</dt><dd id="kpi-sentence">&mdash;</dd><dd class="unit">of queries return the whole answer, at the same index size</dd></div>
+        <div><dt>the overlap trick costs</dt><dd id="kpi-overlap">&mdash;</dd><dd class="unit" id="kpi-overlap-unit">more index, for the same answers</dd></div>
+      </dl>
 
       <section class="board" aria-labelledby="board-h">
         <h2 id="board-h">The leaderboard</h2>

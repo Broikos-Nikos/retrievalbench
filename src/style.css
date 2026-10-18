@@ -75,8 +75,14 @@ main,
 
 /* ---------- masthead ---------- */
 
+/*
+ * RFOLD-F1. This was clamp(2.5rem, 7vh, 5rem) 0 2.5rem, and the masthead was
+ * 797 pixels of an 800 pixel screen. Air above a headline is worth having
+ * when the headline is the whole first screen. It is not worth having when
+ * the page is an instrument the reader is supposed to pick up.
+ */
 .masthead {
-  padding: clamp(2.5rem, 7vh, 5rem) 0 2.5rem;
+  padding: clamp(1.5rem, 4vh, 3rem) 0 1.5rem;
 }
 
 .eyebrow {
@@ -90,8 +96,12 @@ main,
 
 h1 {
   margin: 0 0 1.1rem;
-  max-width: 22ch;
-  font-size: clamp(1.9rem, 1.2rem + 3.1vw, 3.6rem);
+  /* 22ch at the old 3.6rem cap was five and a third lines and 319 pixels on
+     a laptop. 30ch at 2.6rem is four, and the measure is still inside the 45
+     to 75 characters a line wants. The phone is unchanged: the minimum binds
+     there and the container is narrower than either measure. */
+  max-width: 30ch;
+  font-size: clamp(1.9rem, 1.2rem + 2.2vw, 2.6rem);
   line-height: 1.05;
   letter-spacing: -0.024em;
   font-weight: 650;
@@ -162,6 +172,17 @@ h1 em {
 
 section {
   margin-top: clamp(3rem, 8vh, 5rem);
+}
+
+/*
+ * The first section sits under the masthead, which has already paid for the
+ * gap. Written as main > section:first-child rather than .masthead + section,
+ * because the sections are inside main and the masthead has no section
+ * sibling: promptcost shipped that selector dead at tick 230 and it matched
+ * nothing at all.
+ */
+main > section:first-child {
+  margin-top: clamp(1.25rem, 3vh, 2rem);
 }
 
 h2 {
@@ -499,6 +520,23 @@ a {
 @media (max-width: 620px) {
   .lab-head {
     align-items: flex-start;
+  }
+
+  /*
+   * The two control groups on one row rather than two, which is 84 pixels of a
+   * 844 pixel screen and the difference between 56 pixels of the paper on the
+   * first screen and 140. Measured at 390: Policy is 218 wide and Corpus 140,
+   * which is 358 exactly, and the 1.4rem gap between them was what pushed the
+   * pair onto two rows. The buttons give up 0.2rem of side padding each, 32
+   * pixels across the five of them, and the row then fits with room over.
+   * Their height is untouched, so nothing here moves a target below 24.
+   */
+  .controls {
+    gap: 0.6rem;
+  }
+
+  .seg-btn {
+    padding: 0.42rem 0.6rem;
   }
 
   /* Two controls side by side leave each about 150px, which is not enough for

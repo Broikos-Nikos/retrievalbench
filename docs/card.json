@@ -1,19 +1,19 @@
 {
   "why": "What was on screen when public/card.png was taken, so a caption or an og:description can be held to the picture rather than to a memory of it.",
-  "made": "2026-10-12",
+  "made": "2026-10-18",
   "viewport": {
     "width": 1200,
     "height": 630
   },
   "deviceScaleFactor": 1,
-  "bytes": 328631,
+  "bytes": 287776,
   "seen": {
     "title": "retrievalbench: the chunk boundary is not about finding it",
     "background": "#070910",
     "headline": "Where you cut a document does not decide whether you find the answer. It decides whether you are handed all of it.",
     "ogTitle": "retrievalbench: the chunk boundary is not about finding it",
     "ogImage": "https://broikos-nikos.github.io/retrievalbench/card.png",
-    "firstScreenChars": 397,
+    "firstScreenChars": 399,
     "numbers": [
       "0.75",
       "0.823",
