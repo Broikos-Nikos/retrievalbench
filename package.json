@@ -21,6 +21,7 @@
     "check:network": "node tools/check-network.mjs",
     "check:capture": "node tools/check-capture.mjs",
     "check:fold": "node tools/check-fold.mjs",
+    "check:targets": "node tools/check-targets.mjs",
     "build:index": "node tools/build-index.mjs",
     "capture": "node tools/capture.mjs",
     "verify": "node tools/verify.mjs"

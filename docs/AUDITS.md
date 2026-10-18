@@ -34,5 +34,5 @@ kept here because commit messages cite them like any other.
 | `RNET-F1` | low | fixed, tick 192 | The README promises the corpus and the search stay in your browser and nothing holds it: no gate watches the wire |
 | `RPRE-F1` | low | fixed, tick 165 | npm run verify started a server and handed the same missing browser to every gate in turn |
 | `RSEAL-F1` | low | fixed, tick 192 | The page says the work happens in your browser and nothing enforces it |
-| `RTAP-F1` | low | open | Controls shorter than 24 pixels at a phone width |
+| `RTAP-F1` | low | fixed, tick 233 | Controls shorter than 24 pixels at a phone width |
 | `RFF-F1` | low | fixed, tick 226 | npm run capture resolves ffmpeg off PATH and asks for it only after the browser has launched |

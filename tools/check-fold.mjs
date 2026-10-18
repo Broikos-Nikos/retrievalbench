@@ -62,8 +62,15 @@
  *     1280x800   the paper starts at 578 of 800   222 of its 271 pixels showing
  *     390x844    the paper starts at 643 of 844   201 of its 453 pixels showing
  *
- * Those are this machine's numbers. The runner's are in the deploy log and are
- * the ones that decide.
+ * Those are this machine's numbers. The runner's, from the deploy that went
+ * green at 35d005a, are the ones that decide:
+ *
+ *     1280x800   the paper starts at 530 of 800   270 of its 271 pixels showing
+ *     390x844    the paper starts at 693 of 844   151 of its 453 pixels showing
+ *
+ * 50 pixels apart at 390 now, where the first attempt was 97 apart and 73
+ * pixels short. The margin over the rule is 31 pixels on the machine that
+ * matters, and that is what the slack bought.
  */
 
 import { chromium } from 'playwright'

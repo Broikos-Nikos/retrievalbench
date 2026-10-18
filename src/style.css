@@ -487,6 +487,18 @@ a {
 }
 
 /*
+ * RTAP-F1. The only control on this page under 24 by 24 was this one, and
+ * only because an inline link has no height of its own: 303.6 by 21 at 390,
+ * which is the line box of the text. inline-block gives it a box, and the
+ * padding is vertical only so the hit area grows where it was short and the
+ * line it sits on does not move.
+ */
+.repo a {
+  display: inline-block;
+  padding: 0.3rem 0;
+}
+
+/*
  * A table that does not fit its column, reachable rather than cut.
  *
  * Found at tick 198 by the sweep behind watch-it-think WD-F6, which measures
