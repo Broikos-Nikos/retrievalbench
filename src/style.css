@@ -82,7 +82,7 @@ main,
  * the page is an instrument the reader is supposed to pick up.
  */
 .masthead {
-  padding: clamp(1.5rem, 4vh, 3rem) 0 1.5rem;
+  padding: clamp(1rem, 4vh, 3rem) 0 1.5rem;
 }
 
 .eyebrow {
@@ -101,7 +101,7 @@ h1 {
      to 75 characters a line wants. The phone is unchanged: the minimum binds
      there and the container is narrower than either measure. */
   max-width: 30ch;
-  font-size: clamp(1.9rem, 1.2rem + 2.2vw, 2.6rem);
+  font-size: clamp(1.55rem, 1.1rem + 2.2vw, 2.6rem);
   line-height: 1.05;
   letter-spacing: -0.024em;
   font-weight: 650;
@@ -536,7 +536,8 @@ a {
   }
 
   .seg-btn {
-    padding: 0.42rem 0.6rem;
+    padding: 0.42rem 0.5rem;
+    font-size: 0.78rem;
   }
 
   /* Two controls side by side leave each about 150px, which is not enough for

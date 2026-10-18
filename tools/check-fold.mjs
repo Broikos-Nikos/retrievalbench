@@ -41,8 +41,29 @@
  * summarise. On a phone the two control groups went onto one row, 84 pixels,
  * which is the difference between 56 pixels of the paper showing and 144.
  *
+ * ## This gate reads differently on the two machines, and the runner is the one
+ * that counts
+ *
+ * The first version of this fix passed here and failed the deploy. On Windows
+ * the paper landed at 700 of 844 with 144 pixels showing; on the Ubuntu runner
+ * the same commit put it at 797 with 47, because the fonts are not the same
+ * fonts. The headline took another line and the two control groups went back
+ * onto two rows, and 97 pixels went with them. At 1280 the runner is 48 pixels
+ * *shorter* than this machine, so it is not a scale factor, it is text.
+ *
+ * `tools/preflight-runner.mjs` cannot catch that. It builds a fresh clone with
+ * the project's own toolchain, which is the part of the deploy it can be, and
+ * it runs on this machine's fonts, which is the part it cannot. A layout gate
+ * is the one kind of gate the preflight can pass and the deploy still fail, and
+ * the answer is slack rather than a tighter preflight: the headline is smaller
+ * at phone width, and the control row now fits with 64 pixels to spare instead
+ * of 22, so a wider font has somewhere to go.
+ *
  *     1280x800   the paper starts at 578 of 800   222 of its 271 pixels showing
- *     390x844    the paper starts at 700 of 844   144 of its 453 pixels showing
+ *     390x844    the paper starts at 643 of 844   201 of its 453 pixels showing
+ *
+ * Those are this machine's numbers. The runner's are in the deploy log and are
+ * the ones that decide.
  */
 
 import { chromium } from 'playwright'
